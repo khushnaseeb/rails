@@ -1,0 +1,42 @@
+optmethod=Proc.new{|n,arr| n.times do
+opt=""
+3.times do
+opt<<(97+rand(25)).chr
+end
+arr<<opt
+end
+}
+
+0.0-p195 :009 > 100.times do |i|
+2.0.0-p195 :010 >     q=Question.find(i+1)
+2.0.0-p195 :011?>   3.times do |j|
+2.0.0-p195 :012 >       o=Option.new(desc:optrnd[j])
+2.0.0-p195 :013?>     q.options<<o
+2.0.0-p195 :014?>     o.save
+2.0.0-p195 :015?>     end
+2.0.0-p195 :016?>   end
+
+q=Question.all
+o=Option.all
+
+Question.all.collect.each do |p|
+	puts p.desc
+  p.options.each do |o|
+	puts o.desc
+end
+end
+
+
+
+s=Survey.find(1)
+100.times do |i|
+q=Question.create(desc:quesrd[i])
+s.questions<<q
+end
+2.0.0-p195 :193 > s.questions.includes(:options).each do |q|
+2.0.0-p195 :194 >     puts q.desc 
+2.0.0-p195 :195?>   q.options.each do |o|
+2.0.0-p195 :196 >       puts o.desc
+2.0.0-p195 :197?>     end
+2.0.0-p195 :198?>   end
+

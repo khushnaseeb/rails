@@ -1,0 +1,24 @@
+=form_for @survey do |f|
+  %p
+    =f.label :Name 
+    %br
+    =f.text_field :name
+  %p
+    =f.label :Type
+    %br
+    =f.text_field :stype
+  %p
+    =f.label :Location
+    %br
+    =f.text_field :location
+  %p
+    =f.label :Year
+    %br
+    =f.text_field :year
+  %p
+    =f.fields_for :questions do |q|
+      =render "question_fields",:f=>q
+  %p
+
+  =f.submit :save
+

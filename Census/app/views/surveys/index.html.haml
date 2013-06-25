@@ -1,0 +1,18 @@
+%h1 LIST OF SURVEYS
+
+%table
+  %tr
+    %th Name
+    %th Type
+  -@survey.each do |survey|
+    %tr
+      %td 
+        =survey.name
+      %td 
+        =survey.stype
+ 
+  
+
+
+  
+=link_to "Add New Survey", new_survey_path
