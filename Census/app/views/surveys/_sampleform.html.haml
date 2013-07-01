@@ -1,0 +1,34 @@
+%h1 New Survey
+=nested_form_for @survey  do |f|
+  = f.label :name
+  %br
+  = f.text_field :name
+  %br
+  = f.label :type
+  %br
+  = f.text_field :stype
+  %br
+  = f.label :year
+  = f.select(:year,options_for_select(2013..2020))
+  %br
+  = f.label :location
+  %br
+  = f.text_field :location
+  %p
+  = f.fields_for :questions do |q|
+    %p
+    = q.label :Question
+    = q.text_field :desc
+    = q.link_to_remove "remove"
+    = q.fields_for :options do |o|
+      = o.label :Option
+      = o.text_field :desc
+      = o.link_to_remove "remove option"
+    = q.link_to_add "add an option", :options
+  %p  
+  = f.link_to_add "add a question", :questions
+
+  %p
+  =f.submit :save
+
+

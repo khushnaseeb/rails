@@ -1,18 +1,37 @@
+
+  
 %h1 LIST OF SURVEYS
+
 
 %table
   %tr
     %th Name
     %th Type
-  -@survey.each do |survey|
+    %th Year
+    %th Action
+  -@surveys.each do |survey|
+    -flag=current_user.answers.where(:survey_id=>survey.id).empty?
+
     %tr
       %td 
-        =survey.name
+        =survey.name if flag
+      %td
+        =survey.stype  if flag
+      %td
+        =survey.year if flag
+    
+
       %td 
-        =survey.stype
- 
+        =link_to "Edit", edit_survey_path(survey) if current_user.name=="admin"
+      %td
+        =link_to "Remove", survey_path(survey), method: :delete if current_user.name=="admin"
+      %td
+        =link_to "View Details",survey_path(survey) if current_user.name=="admin"
+      %td
+        =link_to "Take a Survey",user_path(survey) if current_user.name!="admin"and flag
+%p
+=link_to "My Surveys", users_path if current_user.name!= "admin"
   
+%p
+=link_to "Add New Survey", new_survey_path if current_user.name=="admin"
 
-
-  
-=link_to "Add New Survey", new_survey_path

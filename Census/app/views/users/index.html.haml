@@ -1,0 +1,27 @@
+%h1 YOUR RESPONSE
+= "Survey   Details" 
+-count=0
+%br
+-current_user.answers.each do |a|
+  -@survey=Survey.find(Question.find(a.question_id).survey_id)
+  -if a.question_id==@survey.questions.first.id
+    -count=0
+    %p
+    ="Survey Name:"
+    =@survey.name
+    ="Year:"
+    =@survey.year
+  %p
+  -question=Question.find(a.question_id)
+  -count=count + 1
+  =count 
+  =question.desc
+  -question.options.each do |o|
+    %br
+    -if o.id==a.option_id 
+      -flag=true
+    =radio_button :option_selected, question.id, o.id,:checked =>flag
+    =o.desc
+    
+%p
+=link_to "Back", surveys_path  

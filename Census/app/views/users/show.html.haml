@@ -1,0 +1,23 @@
+%h1 "Take Survey"
+-if @survey==nil
+  = "choose an option!!" 
+-else
+  =form_for @survey, :url => :answers, :method=> :post do |f|
+    -@survey.questions.includes(:options)
+    -@survey.questions.each do |q|
+      %p
+      = "#{q.desc}"
+      -q.options.each do |o|
+        %br
+        =radio_button "option_selected", q.id,o.id 
+        ="#{o.desc}"
+        
+
+
+
+   
+    =f.submit :submit
+
+      
+
+                    

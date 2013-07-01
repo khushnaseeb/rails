@@ -1,5 +1,7 @@
 class Option < ActiveRecord::Base
   belongs_to :question
+  belongs_to :survey
   attr_accessible :desc
-  validate :desc, presence:true
+  #has_one :answer
+  validates :desc, presence:true
 end

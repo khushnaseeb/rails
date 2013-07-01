@@ -1,0 +1,48 @@
+%h1 Survey Details
+= :Name
+= ":"
+= @survey.name
+%br
+= :Type
+= ":"
+= @survey.stype
+%br
+= :Year
+= ":"
+= @survey.year
+%br
+= :Location
+= ":"
+= @survey.location
+%p
+  -@survey.questions.each_with_index do |q,i|
+    %p
+    = :Question 
+    = i+1 
+    = ":"
+    = q.desc
+    -q.options.each_with_index do |o,i|
+      %br
+      = :Option 
+      = i+1
+      = ":"
+      = o.desc
+      
+%p
+  =link_to "Back", surveys_path
+  
+  
+
+
+
+
+
+
+
+                                  
+                                  
+                                  
+                                  
+                                                                 
+
+

@@ -1,11 +1,17 @@
 require 'spec_helper'
 
 describe SurveysController do
-  let(:survey){Survey.new(name:"pop",stype:"census")}
+  let(:survey){Survey.new(name:"pop",stype:"census",questions_attributes:{
+    
+               '1'=>{'desc'=>"wassup",options_attributes:{'1'=>{desc:"option1"},'2'=>{desc:"option2"},'3'=>{desc:"option3"}}},
+               '2'=>{'desc'=>"hi!!",options_attributes:{'1'=>{desc:"opt1"},'2'=>{desc:"opt2"},'3'=>{desc:"option3"}}},
+               '3'=>{'desc'=>"question3",options_attributes:{'1'=>{desc:"opt1"},'2'=>{desc:"opt2"},'3'=>{desc:"option3"}}}
+       
+             })}
 
   describe "GET index" do
+  
     it "check if @surveys" do
-    #survey = Survey.create(name: "Survey1",stype: "general")
     survey.save
     get :index
     expect(assigns(:surveys).count).to eq(1)
@@ -17,7 +23,9 @@ describe SurveysController do
       get :index
       expect(response).to render_template :index
     end
+
   end
+
 
   describe "GET new" do
     it "should assign empty survey object[@survey]" do
@@ -30,62 +38,74 @@ describe SurveysController do
   end
 
   describe "Post #create" do
-    it "should create a survey with valid parameters" do
-      #survey = Survey.new(name: 'tree',stype: "census")
-      post :create, {survey: {name: survey.name, stype: survey.stype}}
-      expect(assigns(:survey).valid?).to eq(true)
+    it "should not create a survey with valid parameters" do
+      post :create, {survey: {name: survey.name, stype: survey.stype,questions_attributes:{
+        
+                '1'=>{'desc'=>"wassup",options_attributes:{'1'=>{desc:"option1"},'2'=>{desc:"option2"}}},
+                '2'=>{'desc'=>"hi!!",options_attributes:{'1'=>{desc:"opt1"},'2'=>{desc:"opt2"}}},
+                '3'=>{'desc'=>"question3",options_attributes:{'1'=>{desc:"opt1"},'2'=>{desc:"opt2"}}}
       
-    end
+       }}}
+      expect(assigns(:survey).valid?).to eq(false)
+  end
 
-
+=begin
     it "should not create a survey with invalid parameters" do
       
       post :create , {survey: {}}
       expect(assigns(:survey).valid?).to  eq(false)
     end
+=end
 
-    it "should not create survey if no of questions < 3" do
-      post :create ,{survey:{name:"tree", stype:"census",questions_attributes:{ '1'=>{'desc'=>"wassup"},
-                                                                                '2'=>{'desc'=>"hi!!"}}}}
+    it "should not create survey if no. of questions<3 and options<3"  do
+      post :create ,{survey:{name:"tree", stype:"census",questions_attributes:{ 
+        
+        '1'=>{'desc'=>"wassup",options_attributes:{'1'=>{desc:"option1"},'2'=>{desc:"option2"}}},
+        '2'=>{'desc'=>"hi!!",options_attributes:{'1'=>{desc:"opt1"},'2'=>{desc:"opt2"}}},
+        '3'=>{'desc'=>"question3",options_attributes:{'1'=>{desc:"opt1"},'2'=>{desc:"opt2"}}}
+      
+      }}}
 
-      s=Survey.last
-      p s
+      #s=Survey.last
+      #p s.questions
+
+      #s.questions.each do |q|
+       # p q.options
+      #end
       expect(response).to render_template :new
     end
   
 
 
     it "should render new if survey has no questions" do
-      #survey = Survey.new(name: 'tree',stype: 'general')
       post :create, {survey: {name: survey.name, stype:survey.stype}}
-
       expect(response).to render_template :new
     end
 
     it "should edit and update the survey" do
-      #Survey.create(name:"pop", stype:"census")
       survey.save
       survey=Survey.first
       #p survey
-      put :update, {id: survey.id,survey:{name:"john", stype: "general"}}
-      p Survey.first
+      put :update,{id: survey.id, survey: {name:"john",stype:"general"}}
+       
+
+      #print Survey.first
+      print Survey.first.name
       expect(assigns(:survey)).to eq survey
       expect( response).to redirect_to surveys_path
       end
 
     it "should delete the specified survey" do
-      #Survey.create(name:"pop", stype:"census")
       survey.save
       survey=Survey.first
-      p survey
-      #Survey.create(name:"rock", stype:"census")
-      delete :destroy, {id: survey.id, survey:{name: "pop", stype: "census"}}
+      #p survey
+      delete :destroy, id: survey.id #, survey:{name: "pop", stype: "census"}}
       p Survey.all
       expect(response).to redirect_to surveys_path
     end
 
+
   end
 end
   
-
 

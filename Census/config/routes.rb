@@ -1,4 +1,6 @@
 Census::Application.routes.draw do
+  devise_for :users
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
@@ -25,6 +27,9 @@ Census::Application.routes.draw do
   #     end
   #   end
   resources :surveys  
+  resources :users
+  resources :answers
+  root :to => "surveys#index"
 
   # Sample resource route with sub-resources:
   #   resources :products do

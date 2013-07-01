@@ -24,6 +24,7 @@ group :development, :test  do
     gem 'rspec-rails'
     gem 'haml'
 end
+gem 'devise'
 gem 'nested_form'
 gem 'jquery-rails'
 
